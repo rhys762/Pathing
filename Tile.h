@@ -12,13 +12,16 @@ enum class TileState
 {
 	free,//can be walked on
 	blocked,//cannot
-	walked//is walked on
+	walked,//is walked on
+	origin,//start and goal tile
+	checked//the tile was checked
 };
 
 struct Tile
 {
 	TileState state = TileState::free;//determines the color on the gui and used for pathing
 	SDL_Rect outline, inner;//rects for the outline and inner
+	int r = -1, c = -1;
 };
 
 //draw the tile to the renderer
