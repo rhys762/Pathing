@@ -27,14 +27,17 @@ void TileGrid::path()//path from source to target
 
 	//this instantiates some thing from astar boiler, which was big enough to be in a different file
 
+	//returns neighbours
 	NFunctor nf = {this};
+	//heuristic for estimating distance to goal node
 	HFunctor hf = {goal};
 
+	//edge cost also defined in boiler
 	auto path = AStar(start, goal, hf, edge_cost, nf);
 
 	if(path.size())
 	{
-		path.erase(path.begin());//remove the end node
+		path.erase(path.begin());//remove the end node (its goal, like the last pointer will always be goal on succesful path)
 		for(auto t : path)
 		{
 			t->state = TileState::walked;
@@ -83,13 +86,13 @@ void TileGrid::draw(SDL_Renderer * renderer)//draw the grid to renderer
 
 void TileGrid::click(int x, int y)//click on an x,y
 {
-	//std::cout << "CLICK REGISTERED" << std::endl;
-
 	int r = x/width;
 	int c = y/width;
 
+	//clear whats in the grid
 	set_walked_states_free();
 
+	//the target tile who's 'walkability' is toggled
 	Tile & t = grid[r*columns + c];
 
 	if(t.state != TileState::origin && t.state != TileState::blocked)
@@ -100,5 +103,6 @@ void TileGrid::click(int x, int y)//click on an x,y
 	{
 		t.state = TileState::free;
 	}
-	path();
+
+	path();//repath
 }

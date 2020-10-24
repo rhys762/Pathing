@@ -13,6 +13,7 @@
 
 int main()
 {
+	//const variables
 	const int window_width = 600;
 	const int window_height = 600;
 
@@ -20,15 +21,20 @@ int main()
 	const int box_rows = window_height/box_width;
 	const int box_columns = window_width/box_width;
 
-	bool running = true;
+	//running is true when the main loop should continue, set by window creation
+	bool running;
 
+	//create a window
 	Window win ("Pathing Demo: Click a box!", window_width, window_height, &running);
 
+	//clears the window, in hindsight this isnt necessary? TODO check later
 	SDL_SetRenderDrawColor(win.renderer(), 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(win.renderer());
 
+	//the grid of tile to path over
 	TileGrid grid (box_rows, box_columns, box_width);
 
+	//draws grid to screen
 	grid.draw(win.renderer());
 
 	SDL_RenderPresent(win.renderer());
@@ -37,16 +43,18 @@ int main()
 	SDL_Event e;
 	int mouse_x, mouse_y;
 
+	//main loop
 	while(running)
 	{
+		//event loop
 		while(SDL_PollEvent(&e))
 		{
 			switch(e.type)
 			{
-				case SDL_QUIT:
+				case SDL_QUIT://exit
 					running = false;
 					break;
-				case SDL_MOUSEBUTTONDOWN:
+				case SDL_MOUSEBUTTONDOWN://mouse click, causes a repath and redraw
 					SDL_GetMouseState(&mouse_x, &mouse_y);
 					grid.click(mouse_x, mouse_y);
 					grid.draw(win.renderer());
