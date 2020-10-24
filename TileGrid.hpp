@@ -1,7 +1,7 @@
 #ifndef TILEGRID_H
 #define TILEGRID_H
 
-#include "Tile.h"
+#include "Tile.hpp"
 #include <SDL2/SDL.h>
 
 class TileGrid

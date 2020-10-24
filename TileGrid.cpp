@@ -2,8 +2,9 @@
 #include <cmath>
 #include <iostream>
 
-#include "TileGrid.h"
-#include "AStar.h"
+#include "TileGrid.hpp"
+#include "AStar.hpp"
+#include "AStarBoiler.hpp"
 
 void TileGrid::set_walked_states_free()//set walked states to free AND set origin nodes to the correct state
 {
@@ -24,79 +25,7 @@ void TileGrid::path()//path from source to target
 	Tile * start = &grid[0];//start is top left
 	Tile * goal = &grid[rows*columns-1];//end is bottom right
 
-	//this is going to be some boilerplate for the general a star func
-	//its larger than it should be	
-	//this needs to return a container with the neighbours to the param tile
-	struct NFunctor 
-	{
-		TileGrid * tg = nullptr;
-
-		std::vector<Tile*> operator()(Tile * tile)
-		{
-			if(tile->state != TileState::origin)
-			{
-				tile->state = TileState::checked;
-			}
-			std::vector<Tile*> neighbors;
-			int r, c;
-			int rows = tg->get_rows(), columns = tg->get_columns();
-
-			//std::cout << "checking for neighbors of " << tile->r << ", " << tile->c << std::endl;
-			//push pointers to the neighboring tiles to neighbors
-			for(int i = -1; i < 2; i++)
-			{
-				for(int j = -1; j < 2; j++)
-				{
-					//i = j = 0 equates to the param tile, dont want to be neighbor to ourself
-					if(!i && !j)
-					{
-						continue;
-					}
-					
-					r = tile->r + i;
-					c = tile->c + j;
-
-					//if the rc is valid, push the tile
-					if(r >= 0 && r < rows && c >= 0 && c < columns)
-					{
-						Tile * n = tg->operator[](r*columns + c);
-						if(n->state != TileState::blocked)
-						{	
-							neighbors.push_back(n);
-						}
-					}
-
-				}
-			}
-
-			return neighbors;
-		}
-	};
-
-	//this needs to estimate the distance to goal
-	struct HFunctor
-	{
-		Tile * goal = nullptr;
-
-		double operator()(Tile * tile)
-		{
-			double x_dist = goal->r - tile->r;
-			double y_dist = goal->c - tile->c;
-			return sqrt(x_dist*x_dist + y_dist*y_dist);
-		}
-	};
-
-	auto edge_cost = [](Tile * a, Tile * b)
-	{
-		if(a->r == b->r || a->c == b->c)
-		{
-			return 1.0;
-		}	
-		else
-		{	
-			return 1.7;//root 2
-		}
-	};
+	//this instantiates some thing from astar boiler, which was big enough to be in a different file
 
 	NFunctor nf = {this};
 	HFunctor hf = {goal};

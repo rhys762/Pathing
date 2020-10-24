@@ -1,4 +1,4 @@
-#include "Tile.h"
+#include "Tile.hpp"
 
 //draw the tile to the renderer
 void tdraw(const Tile & t, SDL_Renderer * rend)
@@ -24,7 +24,9 @@ void tdraw(const Tile & t, SDL_Renderer * rend)
 			SDL_SetRenderDrawColor(rend, 0xFF, 0xA5, 0x00, 0xFF);//orange
 			break;
 		case TileState::checked:
-			SDL_SetRenderDrawColor(rend, 0x9A, 0xCD, 0x32, 0xFF);//green
+			//this is kind of just confusing, i might leave this out
+			//SDL_SetRenderDrawColor(rend, 0x9A, 0xCD, 0x32, 0xFF);//green
+			SDL_SetRenderDrawColor(rend, 0xC0, 0xC0, 0xC0, 0xFF);//silver
 			break;
 	}
 

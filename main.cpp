@@ -8,32 +8,33 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
-#include "Window.h"
-#include "TileGrid.h"
+#include "Window.hpp"
+#include "TileGrid.hpp"
 
 int main()
 {
-	int window_width = 600;
-	int window_height = 600;
+	const int window_width = 600;
+	const int window_height = 600;
 
-	int box_width = 50;
-	int box_rows = window_height/box_width;
-	int box_columns = window_width/box_width;
+	const int box_width = 50;
+	const int box_rows = window_height/box_width;
+	const int box_columns = window_width/box_width;
 
-	Window win ("Pathing Demo: Click a box!", window_width, window_height);
+	bool running = true;
 
-	SDL_SetRenderDrawColor(win.rend(), 0xFF, 0xFF, 0xFF, 0xFF);
-	SDL_RenderClear(win.rend());
+	Window win ("Pathing Demo: Click a box!", window_width, window_height, &running);
+
+	SDL_SetRenderDrawColor(win.renderer(), 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderClear(win.renderer());
 
 	TileGrid grid (box_rows, box_columns, box_width);
 
-	grid.draw(win.rend());
+	grid.draw(win.renderer());
 
-	SDL_RenderPresent(win.rend());
+	SDL_RenderPresent(win.renderer());
 
 	//event loop:
 	SDL_Event e;
-	bool running = true;
 	int mouse_x, mouse_y;
 
 	while(running)
@@ -48,8 +49,8 @@ int main()
 				case SDL_MOUSEBUTTONDOWN:
 					SDL_GetMouseState(&mouse_x, &mouse_y);
 					grid.click(mouse_x, mouse_y);
-					grid.draw(win.rend());
-					SDL_RenderPresent(win.rend());
+					grid.draw(win.renderer());
+					SDL_RenderPresent(win.renderer());
 					break;
 				default:
 					break;

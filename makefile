@@ -1,20 +1,21 @@
-C="-Wall"
-L="-lSDL2"
+EXEC_NAME=pathing
+C_FLAGS=-Wall
+L_FLAGS=-lSDL2
 
-pathingdemo: main.o Tile.o TileGrid.o Window.o
-	g++ main.o Tile.o TileGrid.o Window.o $L -o pathingdemo
+$(EXEC_NAME): main.o Tile.o TileGrid.o Window.o
+	g++ main.o Tile.o TileGrid.o Window.o -o $(EXEC_NAME) $(L_FLAGS)
 
 main.o: main.cpp
-	g++ -c $C main.cpp
+	g++ $(C_FLAGS) -c main.cpp
 
 Tile.o: Tile.cpp
-	g++ -c $C Tile.cpp
+	g++ $(C_FLAGS) -c Tile.cpp
 
 TileGrid.o: TileGrid.cpp
-	g++ -c $C TileGrid.cpp
+	g++ $(C_FLAGS) -c TileGrid.cpp
 
 Window.o: Window.cpp
-	g++ -c $C Window.cpp
+	g++ $(C_FLAGS) -c Window.cpp
 
 clean:
-	rm *.o pathingdemo
+	rm *.o $(EXEC_NAME)
